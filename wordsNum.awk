@@ -10,3 +10,6 @@ awk 'BEGIN {words=0;chars=0;} {sub(" *$","")}{words=words+NF;chars=chars+length-
 
 #取出某些特定的字段
 #？？？ 特定字段什么意思？？？
+
+
+
