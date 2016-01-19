@@ -1,0 +1,158 @@
+biao3 bu4yao4
+iu1 iu4 iu1
+iu3 iu3 iu4 a3
+iu2 iu2 uo2 ou4
+iu4 iu3 iu4
+4 iang3
+ue4 ue4 ue1 u2 u1
+uo3 uo3 l uo1 e2 uo4
+uo1 e4 uo4 uo2 uo1 u1 e1 ou4 ou1 ao2
+ui1 ei1 ui2 ui1 ui4
+d d t f g x c sh z
+uang4 uang4
+uo2 a4 uo2 uo4 e2
+ve4 ie4
+uang1 uang3 uan1 uang1
+uang2 uan3 uang4 uang1
+uo4 ui4 uo2 uo4 u4 e2
+ie1 a0 ie1 a1 i3 i2 e0 ie2
+h t f h zh j x k ch
+ie3 ie1 ie3
+ie2 ie1 ue2 ie2
+ie4 i4 ian1 i2 ie1 ie2 ie4 e4 ie3
+p p b
+t ch d n y q t
+x x r h s q sh c
+zh sh z j zh ch t d n
+ao4 ia1 ao1 o1 ao4 ao3
+l q l j r n
+ue1 ue1 i4 ue4
+ong4 ong1 ong4 ong2 ong3
+ong2 ong2 ong1 ong3 i4 iang4 ou2
+ong3 ong4 ong2 ong3 ao4 en3
+ong1 ong3 eng1 ong1 ong2 ong4
+un1 un2 en1 un4 un1 in1
+un2 un2 en2 ian4 un1
+un4 un2 un4 en2 in1
+ang4 ang1 eng1 ian3 an2 ang2 ong1 ang4 ang3
+i1 i0 i3 i1 iang3 e0 ian1 i4 i2
+ang1 ang3 ang4 ang2 ang1 ang0
+ang2 ang3 an2 eng2 ang2 ang4
+ang3 ang3 ing2 ang1 an3 ang4
+o4 o4 ei2 o3 e0
+o3 u2 e0
+o2 o2 e0
+o1 u2 o3 o1 a1
+o0 ou3
+i2 i2 e4 a4 i4 i1 i3 ei4
+iong2 iong2
+nai4 ai4
+ua4 ua4 ua1
+ao2 ao1 ao4 ao3 ao2 uo1
+ou3 ou4 ou1 o2 ong4 e3 ou2 ou3 wo3
+e4 e1 u1 en2 ai1 ei4 e4 wo3 e0 a1 e3
+ou1 e0 ong1 ou2 ou4 ou1 ou3
+e1 e2 iao4 e1 ang4
+e0 ei2 i4 iao3 i2 a1 i1 e2 ao3 ei3 e0 e4
+e3 e4 e0 e3
+ue2 iao4 ue2
+a1 an2 a0 a1 a3 a2 ie4 e0 e3 ao1 o4 u4 ai2 a4
+c c j z ch
+iang3 iang1 iang3 ian4 ing2 iang4
+iang4 ang4 iang3 zhe4yang4 iang4
+g k NULL j g h uo3
+a0 a3 a0 a1
+k k q h
+a3 a1 o3 a0 e0 a2 a3 e4 a4
+s zh l s sh x
+ui2 ui2 ui4 ui1
+w m b w wo3
+ai4 ai4 ie2 ai1 ai2 ai3
+ing4 ing4 ing1 in4 ing2 ian3 e0 in1
+ua1 ua1 ua2 ua4 ua3
+ing2 ing3 en3 ing1 ing4 in2 iang3 in4 ing2
+ing3 ing3 in2 ing2 eng3 ing4 ing1
+ch ch w NULL z zh sh c
+u1 un2 u3 e2 u4 uo4 u1
+in1 ian1 in1 e4 in3 in4 ing4 ing1
+ai3 ai4 ai3 i3 ai2 ai1
+ou2 ou3 ou2 ou1
+u2 u3 u4 i3 u2 o3 u1
+ei1 ei2 e0 ei1
+ei0 ei4 ei1
+ei3 e4 ei3 ao3 ou4 ei2 ei4
+ei2 ei3 ui4 ei4 u4 ei2 e4 ui2 ei1
+ei4 e0 i4 a4 ei4 o4 ei3
+er2 3 er3 er2
+u4 ai4 uo3 un4 i0 u1 u2 ai2 u0 uo0 uo2 uo1 i4 un1 iu4 ei4 ei2 u4 u3
+ai1 ai1 i1 uai4 ai3 ai2 ai4
+u0 u0
+u3 u2 u1 u3 ao2 u4
+ai2 ai4 u4 ai3 ai2
+e2 en2 o2 e0 e1 en3 ai1 ie2 e4 wo3 e3 e2
+iang1 iang4 iang3 iang1
+uai4 ai2 uai4
+iang2 ing2 iang2
+uai3 uai1
+ian4 i3 ian3 ian1 ian4 uan4 an3 ian2
+niao3 le0
+ian1 ian2 ian1 ie1 ian3 iang4
+ian2 iao1 ian1 ian2 uan2
+ian3 ian1 ian4 e0 i3 ian3 ie1 i1
+b b m
+f f h
+j j zhe4yang4 zh s q b
+n g l c n d ai4
+uo uo u4
+r r q l
+ia4 ia1 ia4
+ui4 ui2 ui1 ui3 ui4 ai4 en0 uo4
+z d t s ch c z j zh
+ia1 ia3 ia1 ia0 ia2 ia4
+ia2 ia2
+ui3 ui4 ui3
+ao1 uo4 ao1 ao4 ao3 ao2
+a4 a3 a4 NULL a1 e3
+uan1 uan4 uan1 uang1 uan3 uan2
+uan2 uan4 uan3 uan2
+uan3 uan3 uan4 ian1 uan1
+uan4 ue4 uan2 uan4 uan1
+iao4 eng2 iao4 iang4 iao3
+ao3 ao4 ao3 e0 ao1 NULL
+iao2 iao2 iao4 ue2
+iao1 iao3 iao1 a1 iao4
+NULL l h y e4
+en0 en0
+v3 v3
+en3 eng1 en1 e2 en4 e3 en2 iang1 en3
+iao3 iao1 iao3 ue2 u4 ia4 ao4
+er l
+in4 ui3 in1 in4 ing4
+i0 i4 i2 i3 i0 i1
+i3 ei3 i1 ie3 iang4 i3 i0 i2 i4 ing1 ei2
+ua2 ua2
+i4 i2 i4 ing1 u4 eng1 e0 NULL i1 i0 i3
+in2 en2 ing2 in2
+in3 in3 in4 ing2
+an4 an2 uan4 an1 an4 an3 en3 uan1 ong3 ang4
+jiang4 zhe4yang4
+v2 v3
+a2 ao4 a1 a4 o2 a2
+v4 v4
+an1 un2 ai4 an4 ian2 an3 an1 ang1
+an2 ei1 an4 ang4 an3 ai2 an2
+an3 an4 an3 an1 an2 ang3
+eng1 en3 eng3 e3 eng1
+eng2 eng2 eng3 en2 en1 en3 eng1 ang2 eng4
+eng3 eng1 eng4
+eng4 en3 eng3 eng1 en1 eng4
+e e0
+m m b
+ing1 ing1 ing4 in1 ing3 i1 ing2 in3 in4
+q q l
+en1 en1 eng1 in1 en4 en3 ei1
+en2 en2 un2 eng2
+sh sh s zh x NULL ch
+en4 i3 en4 eng1 ei1 ei4 en0 en3 en2 eng4 a4
+y w r y x j sh
+ou4 iu4 ue1 e4 ou4 ou1 ou3
