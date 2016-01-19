@@ -3,8 +3,8 @@
 import random
 import string
 
-yinSuPath=r"F:\Laboratory\ErrorWords\ErrorWords\lex.f2e"
-pyHanzipath=r"F:\Laboratory\ErrorWords\ErrorWords\AllPinHan.txt"
+yinSuPath=r"F:\Laboratory\NLPbase_holidays\ErrorWords\lex.f2e"
+pyHanzipath=r"F:\Laboratory\NLPbase_holidays\ErrorWords\AllPinHan.txt"
 drop_out=0.4
 
 
@@ -115,7 +115,7 @@ def getPYCandidates(pinyin):
 
 
 def GenerateSentPair(pinyinSentence):
-	pySentencePairPath=r"F:\Laboratory\ErrorWords\ErrorWords\pySentencePair.txt"
+	pySentencePairPath=r"F:\Laboratory\NLPbase_holidays\ErrorWords\pySentencePair.txt"
 	pySentPair=openFile(pySentencePairPath,'a+')
 	pySentList=str.split(pinyinSentence," ")
 	for index,pinyin in enumerate(pySentList):
