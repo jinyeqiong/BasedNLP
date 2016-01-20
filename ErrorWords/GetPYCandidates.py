@@ -121,6 +121,7 @@ def getPYCandidates(pinyin):
 #	for i in pinyinCanList:
 #		print i,
 #	print '\n'
+	print pinyin,""
 	return pinyinCanList
 
 def ListToStr_space(sentList):
@@ -155,6 +156,7 @@ def GeneratePYSentPair(pinyinSentence):
 				PinyinPairList.append(ListToStr_space(dealSentList))
 			dealSentList=[]
 			pySentPair.write('-------------------------------\n')
+	print "Generate Pin-Pin finished!"
 	return PinyinPairList
 
 
@@ -212,18 +214,42 @@ def GeneratePHanSentPair(pinyinSentence):
 				pHanSentPair.append(chSent)
 			pinHan.write('-------------------------------\n')
 		count+=1
+	print "Generate Pin-Han finished!"
 	return pHanSentPair
 
+
+def GenerateHHanSentPair(pinyinSentence):
+	hanHanfile=r"F:\Laboratory\NLPbase_holidays\ErrorWords\hanHanSentPair.txt"
+	hanHan=openFile(hanHanfile,"a+")
+
+	hHanSentPair=[]
+	pinhanPair=GeneratePHanSentPair(pinyinSentence)
+	count=1
+	for pinhan in pinhanPair:
+		if count%2==1: #奇数行
+			chSentList=PyToChinese(pinhan) #得到原拼音的所有汉字候选
+			for chSent in chSentList:
+#				print chSent
+				hanHan.write("%s\n" % chSent)
+				hHanSentPair.append(chSent)
+				hanHan.write("%s\n" % pinhanPair[count])
+				hHanSentPair.append(pinhanPair[count])
+			hanHan.write('-------------------------------\n')
+		count+=1
+	print "Generate Han-Han finished!"
+	return hHanSentPair
 
 
 
 
 
 def main():
-	GeneratePHanSentPair('wo3 xi3 huan1 du2 shu1')
+	GenerateHHanSentPair('wo3 xi3 huan1 du2 shu1')
+#	GeneratePHanSentPair('wo3 xi3 huan1 du2 shu1')
 #	pinyinSent='wo3 xi3 huan1 du2 shu1'
 #	PyToChinese(pinyinSent)
 	
+	print "Well Done!"
 
 
 
