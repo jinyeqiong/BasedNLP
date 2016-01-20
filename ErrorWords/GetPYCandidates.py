@@ -2,15 +2,20 @@
 
 import random
 import string
+import codecs
+import copy 
 
 yinSuPath=r"F:\Laboratory\NLPbase_holidays\ErrorWords\lex.f2e"
 pyHanzipath=r"F:\Laboratory\NLPbase_holidays\ErrorWords\AllPinHan.txt"
 drop_out=0.4
 
+ranseed=random.randint(0,1000)*1.0/10000  #随机数种子，相当于进行了两次随机
+
+
 
 def openFile(filename,mode):
 	try :
-		file=open(filename,mode)
+		file=codecs.open(filename,mode,encoding='utf-8')
 	except IOError as e :
 		print "Unable to open the file ",filename,"\n",e
 	else:
@@ -20,8 +25,14 @@ def openFile(filename,mode):
 yinSuFile=openFile(yinSuPath,"r")
 pyHanziFile=openFile(pyHanzipath,"r")
 
+def Encode(sent,code): #原句的编码也改变了
+	return sent.encode(code)
+
+def Decode(sent,code): #原句的编码也改变了
+	return sent.decode(code)
 
 
+#得到语料库
 def getYinSuList():
 #	yinSuResultFile=r"F:\Laboratory\ErrorWords\ErrorWords\yinSu.txt"
 #	yinsu=openFile(yinSuResultFile,'a+')
@@ -29,7 +40,7 @@ def getYinSuList():
 	line =yinSuFile.readline()
 	valuelist=[]
 	while line:
-		linelist=str.split(line," ") #去掉后缀\r\n
+		linelist=str.split(Encode(line[:-1],'gbk')," ") #去掉后缀\r\n
 		key =linelist[1]
 		value =linelist[0]
 		#value_num=linelist[2]
@@ -63,7 +74,7 @@ def getPyHanzi():
 	pyHanziDict={}
 	line=pyHanziFile.readline()
 	while line:								
-		lineList=str.split(line," ")
+		lineList=str.split(Encode(line[:-1],'gbk')," ")
 		pyHanziDict[lineList[0]]=lineList[1]
 		line=pyHanziFile.readline()
 	return pyHanziDict
@@ -90,11 +101,11 @@ def getShengYun(pinyin):
 		yun=pinyin
 	return sheng,yun
 
-
+#得到一个拼音的候选拼音
 def getPYCandidates(pinyin):
 	pinyinCanList=[]
 	sheng,yun=getShengYun(pinyin)
-	print sheng ,yun 
+#	print sheng ,yun 
 	if sheng!='':
 #		print yinsuDic[sheng]
 		for s in yinsuDic[sheng]:
@@ -107,46 +118,112 @@ def getPYCandidates(pinyin):
 		if y in pinhanDic:
 #			print y,"*",
 			pinyinCanList.append(y)
-	for i in pinyinCanList:
-		print i,
-	print '\n'
+#	for i in pinyinCanList:
+#		print i,
+#	print '\n'
 	return pinyinCanList
-
-
-
-def GenerateSentPair(pinyinSentence):
-	pySentencePairPath=r"F:\Laboratory\NLPbase_holidays\ErrorWords\pySentencePair.txt"
-	pySentPair=openFile(pySentencePairPath,'a+')
-	pySentList=str.split(pinyinSentence," ")
-	for index,pinyin in enumerate(pySentList):
-		print "now pinyin :",pinyin
-		ran=random.uniform(0,10)*1.0/10
-		print ran
-		if ran > drop_out:
-			dealSentList=pySentList
-			pyCanList=getPYCandidates(pinyin)
-			for py in pyCanList:
-				dealSentList[index]=py
-				pySentPair.write(pinyinSentence)
-				pySentPair.write("\n%s\n" % (ListToStr_space(dealSentList)))
-			pySentPair.write('-------------------------------\n')
-
 
 def ListToStr_space(sentList):
 	spaceSent=''
 	for word in sentList:
 		spaceSent = spaceSent+word+" "
+	spaceSent=spaceSent.rstrip()
 	return spaceSent
+
+#得到拼音句对
+def GeneratePYSentPair(pinyinSentence):
+	pySentencePairPath=r"F:\Laboratory\NLPbase_holidays\ErrorWords\pySentencePair.txt"
+	pySentPair=openFile(pySentencePairPath,'a+')
+
+	global ranseed
+	PinyinPairList=[]
+	pySentList=str.split(Encode(pinyinSentence,'gbk')," ")
+	for index,pinyin in enumerate(pySentList):
+		print "now pinyin :",pinyin
+		ranseed+=1
+		random.seed(ranseed)
+		ran=random.uniform(0,10000)*1.0/10000
+		print ran
+		if ran > drop_out:
+			dealSentList=copy.deepcopy(pySentList) #保证更改一个list，另一个list不变
+			pyCanList=getPYCandidates(pinyin)
+			for py in pyCanList:
+				dealSentList[index]=py
+				pySentPair.write(pinyinSentence)
+				PinyinPairList.append(pinyinSentence)
+				pySentPair.write("\n%s\n" % (ListToStr_space(dealSentList)))
+				PinyinPairList.append(ListToStr_space(dealSentList))
+			dealSentList=[]
+			pySentPair.write('-------------------------------\n')
+	return PinyinPairList
+
+
+def TwoListToOneList(list1,list2): #汉字
+	resultlist=[]
+	for hi in list1:
+		for hj in list2:
+			resultlist.append(hi+" "+hj)
+	return resultlist
+
+
+#一句拼音对应的所有汉语句子
+def PyToChinese(pinyinSentence):
+	tempfile=r"F:\Laboratory\NLPbase_holidays\ErrorWords\tempFile.txt"
+	temp=openFile(tempfile,"a+")
+
+	pySentList=str.split(Encode(pinyinSentence,'gbk')," ")
+	pinyin=pySentList[0]
+	nextpinyin=pySentList[1]
+	#注：pinhanDic[pinyin] 是当只有一个拼音时
+	groupList=TwoListToOneList(list(Decode(pinhanDic[pinyin],'gbk')),list(Decode(pinhanDic[nextpinyin],'gbk')))
+
+	index=2
+	while index<len(pySentList):
+		nextpinyin=pySentList[index]
+		groupList=TwoListToOneList(groupList,list(Decode(pinhanDic[nextpinyin],'gbk'))) 
+		index+=1
+	for line in groupList:
+#		print line 
+		temp.write(line)
+		temp.write('\n')
+	return groupList
+
+#一句拼音，得到多个候选拼音句，然后又得到每个候选拼音句的所有汉语句子
+def GeneratePHanSentPair(pinyinSentence):
+	pinHanfile=r"F:\Laboratory\NLPbase_holidays\ErrorWords\pinHanSentPair.txt"
+	pinHan=openFile(pinHanfile,"a+")
+
+	pHanSentPair=[]
+
+	pinyinPair=GeneratePYSentPair(pinyinSentence)
+#	for i in pinyinPair:
+#		print i
+
+	count=1
+	for pinyinSent in pinyinPair:
+		if count%2==0: #偶数行
+#			print count,pinyinSent
+			chSentList=PyToChinese(pinyinSent)
+			for chSent in chSentList:
+#				print "Sentence:",chSent
+				pinHan.write(pinyinPair[count-2])
+				pHanSentPair.append(pinyinPair[count-2])
+				pinHan.write("\n%s\n"%chSent)
+				pHanSentPair.append(chSent)
+			pinHan.write('-------------------------------\n')
+		count+=1
+	return pHanSentPair
+
+
+
+
 
 
 def main():
-
-#	getPYCandidates("ou3")
-	GenerateSentPair('wo3 xi3 huan1 du2 shu1')
+	GeneratePHanSentPair('wo3 xi3 huan1 du2 shu1')
+#	pinyinSent='wo3 xi3 huan1 du2 shu1'
+#	PyToChinese(pinyinSent)
 	
-	
-#	sheng,yun=getShengYun('hou')
-#	print sheng,"**",yun
 
 
 
