@@ -3,19 +3,19 @@
 
 例：wo3 xi3 huan1 du2 shu1
 结果是一行正确拼音，一行构造拼音，
-结果存在pySentencePair.txt文件里。
+结果存在G_pySentencePair.txt文件里。
 
 
 2016.1.20
 生成拼音-汉字的句子对：
-tempFilet.txt文件是存储每个候选拼音句子的候选汉字句子的一个临时文件。
-pinHanSentPair.txt文件是存储拼音-汉字句子对：
+G_tempChnFile.txt文件是存储每个候选拼音句子的候选汉字句子的一个临时文件。
+G_pinHanSentPair.txt文件是存储拼音-汉字句子对：
 一行拼音，一行汉字句子
 即可得到一句拼音-> 拼音候选的句子-> 拼音候选的所有汉字候选的句子。
 
 
 生成汉字-汉字的句子对：
-hanHanSentPair.txt文件是存储汉字-汉字对的文件
+G_hanHanSentPair.txt文件是存储汉字-汉字对的文件
 但是全部运行会特别大，无法显示。
 
 对其进行裁剪，通过百度搜索提取关键词，正在看python的抓取网页，预计明天进行裁剪~

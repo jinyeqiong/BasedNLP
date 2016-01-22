@@ -134,7 +134,7 @@ def ListToStr_space(sentList):
 
 #得到拼音句对
 def GeneratePYSentPair(pinyinSentence):
-	pySentencePairPath=r"F:\Laboratory\NLPbase_holidays\ErrorWords\pySentencePair.txt"
+	pySentencePairPath=r"F:\Laboratory\NLPbase_holidays\ErrorWords\G_pySentencePair.txt"
 	pySentPair=openFile(pySentencePairPath,'a+')
 
 	global ranseed
@@ -171,7 +171,7 @@ def TwoListToOneList(list1,list2): #汉字
 
 #一句拼音对应的所有汉语句子
 def PyToChinese(pinyinSentence):
-	tempfile=r"F:\Laboratory\NLPbase_holidays\ErrorWords\tempFile.txt"
+	tempfile=r"F:\Laboratory\NLPbase_holidays\ErrorWords\G_tempChnFile.txt"
 	temp=openFile(tempfile,"a+")
 	chineseSentWithBDu=[]
 
@@ -189,20 +189,25 @@ def PyToChinese(pinyinSentence):
 	for line in groupList:
 		print line 
 #		print "Code: ",isinstance(line,unicode) #True
+
+		#未连接百度接口
+		temp.write(line)
+		temp.write('\n')
+	return groupList
 		
 		#连接百度接口，查询句子正常出现的个数
-		key=line.encode('gbk').replace(' ','')
-		baiduCount=search(key)
-		print "count:",baiduCount
-		if baiduCount>10:
-			print line
-			temp.write("%s\n"%line)
-			chineseSentWithBDu.append(line)
-	return chineseSentWithBDu
+#		key=line.encode('gbk').replace(' ','')
+#		baiduCount=search(key)
+#		print "count:",baiduCount
+#		if baiduCount>10:
+#			print line
+#			temp.write("%s\n"%line)
+#			chineseSentWithBDu.append(line)
+#	return chineseSentWithBDu
 
 #一句拼音，得到多个候选拼音句，然后又得到每个候选拼音句的所有汉语句子
 def GeneratePHanSentPair(pinyinSentence):
-	pinHanfile=r"F:\Laboratory\NLPbase_holidays\ErrorWords\pinHanSentPair.txt"
+	pinHanfile=r"F:\Laboratory\NLPbase_holidays\ErrorWords\G_pinHanSentPair.txt"
 	pinHan=openFile(pinHanfile,"a+")
 
 	pHanSentPair=[]
@@ -229,7 +234,7 @@ def GeneratePHanSentPair(pinyinSentence):
 
 
 def GenerateHHanSentPair(pinyinSentence):
-	hanHanfile=r"F:\Laboratory\NLPbase_holidays\ErrorWords\hanHanSentPair.txt"
+	hanHanfile=r"F:\Laboratory\NLPbase_holidays\ErrorWords\G_hanHanSentPair.txt"
 	hanHan=openFile(hanHanfile,"a+")
 
 	hHanSentPair=[]
@@ -254,11 +259,11 @@ def GenerateHHanSentPair(pinyinSentence):
 
 
 def main():
-#	GenerateHHanSentPair('wo3 xi3 huan1 du2 shu1')
+	GenerateHHanSentPair('wo3 xi3 huan1 du2 shu1')
 
 #	GeneratePHanSentPair('wo3 xi3 huan1 du2 shu1')
-	pinyinSent='wo3 xi3 huan1 du2 shu1'
-	PyToChinese(pinyinSent)
+#	pinyinSent='wo3 xi3 huan1 du2 shu1'
+#	PyToChinese(pinyinSent)
 	
 #	s="我喜欢读书"
 #	num=search(s.decode('utf-8').encode('gbk'))
