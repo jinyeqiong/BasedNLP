@@ -6,10 +6,22 @@ import codecs
 import copy 
 from baidu import *
 
+#语料库
 yinSuPath=r"F:\Laboratory\NLPbase_holidays\ErrorWords\lex.f2e"
 pyHanzipath=r"F:\Laboratory\NLPbase_holidays\ErrorWords\AllPinHan.txt"
-drop_out=0.4
 
+#生成文件
+pinyinPairfile=r"F:\Laboratory\NLPbase_holidays\ErrorWords\G_pySentencePair.txt" #生成拼音句对
+pinHanfile=r"F:\Laboratory\NLPbase_holidays\ErrorWords\G_pinHanSentPair.txt" #生成拼音汉字句对
+hanHanfile=r"F:\Laboratory\NLPbase_holidays\ErrorWords\G_hanHanSentPair.txt" #生成汉字汉字句对
+
+#临时文件
+hanzi_tempfile=r"F:\Laboratory\NLPbase_holidays\ErrorWords\GT_chineseFile.txt" #生成临时文件，存储一句拼音对应的所有汉字句
+pinyinPair_tempfile=r"F:\Laboratory\NLPbase_holidays\ErrorWords\GT_pinYinPairFile.txt" #生成拼音对的临时文件（每一句原拼音得到的拼音对）
+pinhanPair_tempfile=r"F:\Laboratory\NLPbase_holidays\ErrorWords\GT_pinHanPairFile.txt" #生成拼音汉字对的临时文件（每一句原拼音得到的拼音汉字对）
+#hanhanPair_tempfile=r"F:\Laboratory\NLPbase_holidays\ErrorWords\GT_hanHanPairFile.txt" #生成汉字汉字对的临时文件
+
+drop_out=0.4
 ranseed=random.randint(0,1000)*1.0/10000  #随机数种子，相当于进行了两次随机
 
 
@@ -23,8 +35,10 @@ def openFile(filename,mode):
 		return file
 
 
+#打开语料库
 yinSuFile=openFile(yinSuPath,"r")
 pyHanziFile=openFile(pyHanzipath,"r")
+
 
 def Encode(sent,code): #原句的编码也改变了
 	return sent.encode(code)
@@ -117,11 +131,7 @@ def getPYCandidates(pinyin):
 						pinyinCanList.append(s+y)
 	for y in yinsuDic[yun]:
 		if y in pinhanDic:
-#			print y,"*",
 			pinyinCanList.append(y)
-#	for i in pinyinCanList:
-#		print i,
-#	print '\n'
 	print pinyin,""
 	return pinyinCanList
 
@@ -134,11 +144,9 @@ def ListToStr_space(sentList):
 
 #得到拼音句对
 def GeneratePYSentPair(pinyinSentence):
-	pySentencePairPath=r"F:\Laboratory\NLPbase_holidays\ErrorWords\G_pySentencePair.txt"
-	pySentPair=openFile(pySentencePairPath,'a+')
-
+	pySentPair=openFile(pinyinPairfile,'a+') #生成拼音句对
+	pySentPair_temp=openFile(pinyinPair_tempfile,'w') #生成临时文件
 	global ranseed
-	PinyinPairList=[]
 	pySentList=str.split(Encode(pinyinSentence,'gbk')," ")
 	for index,pinyin in enumerate(pySentList):
 		print "now pinyin :",pinyin
@@ -152,13 +160,13 @@ def GeneratePYSentPair(pinyinSentence):
 			for py in pyCanList:
 				dealSentList[index]=py
 				pySentPair.write(pinyinSentence)
-				PinyinPairList.append(pinyinSentence)
+				pySentPair_temp.write(pinyinSentence)
 				pySentPair.write("\n%s\n" % (ListToStr_space(dealSentList)))
-				PinyinPairList.append(ListToStr_space(dealSentList))
+				pySentPair_temp.write("\n%s\n" % (ListToStr_space(dealSentList)))
 			dealSentList=[]
-			pySentPair.write('-------------------------------\n')
+
 	print "Generate Pin-Pin finished!"
-	return PinyinPairList
+
 
 
 def TwoListToOneList(list1,list2): #汉字
@@ -171,10 +179,8 @@ def TwoListToOneList(list1,list2): #汉字
 
 #一句拼音对应的所有汉语句子
 def PyToChinese(pinyinSentence):
-	tempfile=r"F:\Laboratory\NLPbase_holidays\ErrorWords\G_tempChnFile.txt"
-	temp=openFile(tempfile,"a+")
-	chineseSentWithBDu=[]
-
+#	print isinstance(pinyinSentence,unicode)
+	temp=openFile(hanzi_tempfile,"w") #生成临时文件，存储一句拼音对应的所有汉字句
 	pySentList=str.split(Encode(pinyinSentence,'gbk')," ")
 	pinyin=pySentList[0]
 	nextpinyin=pySentList[1]
@@ -187,13 +193,12 @@ def PyToChinese(pinyinSentence):
 		groupList=TwoListToOneList(groupList,list(Decode(pinhanDic[nextpinyin],'gbk'))) 
 		index+=1
 	for line in groupList:
-		print line 
+#		print line 
 #		print "Code: ",isinstance(line,unicode) #True
 
 		#未连接百度接口
 		temp.write(line)
 		temp.write('\n')
-	return groupList
 		
 		#连接百度接口，查询句子正常出现的个数
 #		key=line.encode('gbk').replace(' ','')
@@ -207,52 +212,64 @@ def PyToChinese(pinyinSentence):
 
 #一句拼音，得到多个候选拼音句，然后又得到每个候选拼音句的所有汉语句子
 def GeneratePHanSentPair(pinyinSentence):
-	pinHanfile=r"F:\Laboratory\NLPbase_holidays\ErrorWords\G_pinHanSentPair.txt"
-	pinHan=openFile(pinHanfile,"a+")
-
-	pHanSentPair=[]
-
-	pinyinPair=GeneratePYSentPair(pinyinSentence)
-#	for i in pinyinPair:
-#		print i
-
+	pinHan=openFile(pinHanfile,"a+") #生成拼音汉字句对
+	pinHan_temp=openFile(pinhanPair_tempfile,'w')
+	GeneratePYSentPair(pinyinSentence)
+	pinyinfile=openFile(pinyinPair_tempfile,'r')
+	pinyin_current=pinyinfile.readline()
 	count=1
-	for pinyinSent in pinyinPair:
+	prePinyin=""
+	while pinyin_current:
+		pinyin_current=pinyin_current[:-1]
+		if count%2==1: #奇数行
+			prePinyin=pinyin_current
+#			print "prePinyin:",prePinyin
 		if count%2==0: #偶数行
 #			print count,pinyinSent
-			chSentList=PyToChinese(pinyinSent)
-			for chSent in chSentList:
-#				print "Sentence:",chSent
-				pinHan.write(pinyinPair[count-2])
-				pHanSentPair.append(pinyinPair[count-2])
-				pinHan.write("\n%s\n"%chSent)
-				pHanSentPair.append(chSent)
-			pinHan.write('-------------------------------\n')
+			PyToChinese(pinyin_current)
+			hanzifile=openFile(hanzi_tempfile,'r')
+			hanzi=hanzifile.readline()
+#			print "hanzi:",hanzi
+			while hanzi:
+				pinHan.write('%s\n'%prePinyin)
+				pinHan_temp.write('%s\n'%prePinyin)
+				pinHan.write('%s\n'%hanzi[:-1])
+				pinHan_temp.write('%s\n'%hanzi[:-1])
+				hanzi=hanzifile.readline()
 		count+=1
+		pinyin_current=pinyinfile.readline()
 	print "Generate Pin-Han finished!"
-	return pHanSentPair
+
 
 
 def GenerateHHanSentPair(pinyinSentence):
-	hanHanfile=r"F:\Laboratory\NLPbase_holidays\ErrorWords\G_hanHanSentPair.txt"
-	hanHan=openFile(hanHanfile,"a+")
-
-	hHanSentPair=[]
-	pinhanPair=GeneratePHanSentPair(pinyinSentence)
+	hanHan=openFile(hanHanfile,"a+") #生成汉字汉字句对
+	GeneratePHanSentPair(pinyinSentence)
+	pinhanPairFile=openFile(pinhanPair_tempfile,'r')
+	pinhan=pinhanPairFile.readline()
 	count=1
-	for pinhan in pinhanPair:
+	nextHanzi=""
+	while pinhan:
+		pinhan=pinhan[:-1]
+		if count%2==0: #偶数行
+			nextHanzi=pinhan 
 		if count%2==1: #奇数行
-			chSentList=PyToChinese(pinhan) #得到原拼音的所有汉字候选
-			for chSent in chSentList:
-#				print chSent
-				hanHan.write("%s\n" % chSent)
-				hHanSentPair.append(chSent)
-				hanHan.write("%s\n" % pinhanPair[count])
-				hHanSentPair.append(pinhanPair[count])
-			hanHan.write('-------------------------------\n')
+			PyToChinese(pinhan)
+		if nextHanzi!="":
+			allhanzifile=openFile(hanzi_tempfile,'r')
+			allhanzi=allhanzifile.readline()
+			while allhanzi:
+				hanHan.write('%s\n'%allhanzi[:-1])
+				print "hanzi:",allhanzi[:-1]
+				hanHan.write('%s\n'%nextHanzi)
+				print "nextHanzi:",nextHanzi
+				allhanzi=allhanzifile.readline()
+			nextHanzi=""
 		count+=1
+		pinhan=pinhanPairFile.readline()
+		
 	print "Generate Han-Han finished!"
-	return hHanSentPair
+
 
 
 
@@ -265,6 +282,7 @@ def main():
 #	pinyinSent='wo3 xi3 huan1 du2 shu1'
 #	PyToChinese(pinyinSent)
 	
+	#测试百度接口
 #	s="我喜欢读书"
 #	num=search(s.decode('utf-8').encode('gbk'))
 #	print num
