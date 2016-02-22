@@ -5,11 +5,11 @@ import codecs
 
 def openFile(filename,mode):
 	try:
-		file=codecs.open(filename,mode,encoding="utf-8")
+		f=codecs.open(filename,mode,encoding="utf-8")
 	except IOError as e:
 		print "Unable to open the file ",filename,"\n",e
 	else:
-		return file
+		return f
 
 
 

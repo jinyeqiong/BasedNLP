@@ -18,7 +18,7 @@ def search(key):
     html=req.read()  
     soup=BeautifulSoup(html,'lxml')  
 
-    file = open("result.txt",'a')  
+    f = open("result.txt",'a')  
       
     content  = soup.findAll('h3',attrs={"class":"t"})
 
@@ -32,8 +32,8 @@ def search(key):
             print "==========text:",e.string
             print "==========len(e.string)",len(e.string)
             if e.string.encode('gbk') in key and len(e.string)!=1:
-                file.write(e.string.encode('utf-8'))
-                file.write('\n')
+                f.write(e.string.encode('utf-8'))
+                f.write('\n')
 #                    print "e in key , OK!!!"
                 num_em+=1
 #            else: #过滤的太暴力啦~
@@ -41,7 +41,7 @@ def search(key):
 #            print '------------------------------------'
 #        print "num_em:",num_em
 
-       #file.close()  
+       #f.close()  
         #解析下一页  
 #        next_page='http://www.baidu.com'+soup('a',{'href':True,'class':'n'})[0]['href'] # search for the next page  
 #        header='www.baidu.com'
