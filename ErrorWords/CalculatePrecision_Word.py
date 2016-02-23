@@ -69,9 +69,10 @@ def calAccur(rightForm,genFile):
 
 
 def run_genForm():
-	rightFilePath=r"F:\Laboratory\NLPbase_holidays\FinalTest_SubTask2_space.t2s" #正确的文件
-	compareFilePath=r"F:\Laboratory\NLPbase_holidays\rightwords.output" #得到的结果文件
-	difwordFilePath=r"F:\Laboratory\NLPbase_holidays\test_True.txt" #生成格式文件
+	rightFilePath=r"F:\Laboratory\NLPbase_holidays\ErrorWords\ExerciseResults\FinalTest_SubTask2_space.t2s" #正确的文件
+	compareFilePath=r"F:\Laboratory\NLPbase_holidays\ErrorWords\ExerciseResults\V2\rightwords.output" #得到的结果文件
+	difwordFilePath=r"F:\Laboratory\NLPbase_holidays\ErrorWords\ExerciseResults\V2\test_True.txt"
+	 #生成格式文件
 	rightFile=openFile(rightFilePath,"r")
 	compareFile=openFile(compareFilePath,"r")
 	difwordFile=openFile(difwordFilePath,"w")
@@ -81,8 +82,8 @@ def run_genForm():
 	rightFile.close()
 
 def run_calAccur():
-	difwordFilePath=r"F:\Laboratory\NLPbase_holidays\test_True.txt" #生成格式文件
-	rightFormFilePath=r"F:\Laboratory\NLPbase_holidays\FinalTest_SubTask2_Truth.t2s"
+	difwordFilePath=r"F:\Laboratory\NLPbase_holidays\ErrorWords\ExerciseResults\V2\test_True.txt" #生成格式文件
+	rightFormFilePath=r"F:\Laboratory\NLPbase_holidays\ErrorWords\ExerciseResults\FinalTest_SubTask2_Truth.t2s"
 
 	rightFormFile=openFile(rightFormFilePath,"r")
 	difwordFile=openFile(difwordFilePath,"r")

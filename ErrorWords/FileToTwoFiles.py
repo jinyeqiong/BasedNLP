@@ -39,8 +39,8 @@ def TwolinesToline(filePath,resultfile):
 
 def main():
 	rawFilePath=r"F:\Laboratory\NLPbase_holidays\ErrorWords\test_hanzi_pair.hz"
-	sourceFilePath=r"F:\Laboratory\NLPbase_holidays\ErrorWords\sourceSent.so"
-	targetFilePath=r"F:\Laboratory\NLPbase_holidays\ErrorWords\targetSent.ta"
+	sourceFilePath=r"F:\Laboratory\NLPbase_holidays\ErrorWords\sourceSent_sep.so"
+	targetFilePath=r"F:\Laboratory\NLPbase_holidays\ErrorWords\targetSent_sep.ta"
 #	sFilePath=r"F:\Laboratory\NLPbase_holidays\ErrorWords\chinese.fr"
 #	tFilePath=r"F:\Laboratory\NLPbase_holidays\ErrorWords\chinese.en"
 

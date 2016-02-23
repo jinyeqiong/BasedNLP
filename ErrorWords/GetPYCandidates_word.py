@@ -278,7 +278,7 @@ def getHzSent(cnSentList,pySentList):
 
 
 #对于一句拼音，得到k句汉字句候选
-def getKCanSents(cnSentList,pySentList,k=10):
+def getKCanSents(cnSentList,pySentList,k=20):
 	sentList=[]
 	count=0
 	while count<k:
@@ -288,6 +288,16 @@ def getKCanSents(cnSentList,pySentList,k=10):
 		count+=1
 	return sentList
 
+#将一句话的每个字分开
+def sepOneSent(sentence):
+	resultSent=""
+	sentlist=list(sentence)
+	for s in sentlist:
+		resultSent=resultSent+s+" "
+	resultSent=resultSent.replace("  "," ").replace("  "," ")
+
+	return resultSent
+
 def runfunction():
 	sourceFilePath=r"F:\Laboratory\NLPbase_holidays\ErrorWords\test.hz"
 	HanZipath=r"F:\Laboratory\NLPbase_holidays\ErrorWords\test_hanzi.hz"
@@ -295,8 +305,8 @@ def runfunction():
 
 
 	sourceFile=openFile(sourceFilePath,"r")
-	HanZi=openFile(HanZipath,"a+")
-	HanZiPair=openFile(HanZiPairPath,"a+")
+	HanZi=openFile(HanZipath,"w")
+	HanZiPair=openFile(HanZiPairPath,"w")
 
 	cnsentence=sourceFile.readline()
 	count=1
@@ -312,8 +322,8 @@ def runfunction():
 		for s in candidate:
 			HanZi.write("%s\n"%s)
 
-			HanZiPair.write("%s\n"%cnsent_nopunc.replace(" ",""))
-			HanZiPair.write("%s\n"%s.replace(" ",""))
+			HanZiPair.write("%s\n"%sepOneSent(cnsent_nopunc.replace(" ","")))
+			HanZiPair.write("%s\n"%sepOneSent(s.replace(" ","")))
 			print s
 		HanZi.write("=========================================\n")
 
