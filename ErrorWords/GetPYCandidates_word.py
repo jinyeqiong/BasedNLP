@@ -13,10 +13,11 @@ ranseed=random.randint(0,1000)*1.0/10000  #随机数种子，相当于进行了�
 drop_out=0.1
 
 DIGITAL=['0','1','2','3','4','5','6','7','8','9']
+ALPHABET=['A']
 
 #语料库
 yinSuPath=r"F:\Laboratory\NLPbase_holidays\ErrorWords\lex.f2e"
-pyHanzipath=r"F:\Laboratory\NLPbase_holidays\ErrorWords\AllPinHan.txt"
+pyHanzipath=r"F:\Laboratory\NLPbase_holidays\ErrorWords\reorder_pinhan.txt"  #AllPinHan.txt
 
 
 #优化拼音工具 (运行一次即可)
@@ -91,7 +92,10 @@ def getPyHanzi():
 	while line:								
 		lineList=str.split(Encode(line[:-1],'gbk')," ")
 		if len(lineList[1])!=0:
-			pyHanziDict[lineList[0]]=lineList[1]
+			if lineList[0] in pyHanziDict:
+				pyHanziDict[lineList[0]]+=lineList[1]
+			else:
+				pyHanziDict[lineList[0]]=lineList[1]
 		line=pyHanziFile.readline()
 	return pyHanziDict
 
@@ -105,6 +109,7 @@ pinhanDic=getPyHanzi()
 def getPinyin(word):
     pinyin =pypinyin.slug(word,style=pypinyin.TONE2) #多音字的没弄！
     pinyin=pinyin.replace("-"," ").replace("  "," ").replace("  "," ")
+#    print pinyin
     return pinyin
 
 #将拼音标注同一化！ a1ng=>ang1
@@ -130,39 +135,85 @@ def numToEnd(str ):
 #对于一句汉语句子，去除标点
 def delPunctuation(sentence):
 	sentence=re.sub("[．·]".decode('utf-8'), "".decode('utf-8'),sentence)
-	sentence_pun = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%‰……&*（）【】《》％：“”『』；‘’／]+".decode('utf-8'), " ".decode('utf-8'),sentence).replace("  "," ").replace("  "," ")
+	sentence_pun = re.sub("[\s+\.\!\/_,$%^*(+\"\']+|[+——！，。？、~@#￥%‰……&*（）【】℃《》％：“”『』；‘’／]+".decode('utf-8'), " ".decode('utf-8'),sentence).replace("  "," ").replace("  "," ")
 	if sentence_pun.startswith(" "):
 		sentence_pun=sentence_pun[1:]
 	return sentence_pun
 
 #将list中连续的数字组合成一个数字
-def combineNumbers(strlist):
+def combineNumbers_hanzi(strlist):
 	resultList=[]
 	number=""
 	for i in strlist:
-		if i[0] in DIGITAL:
+#		if i[0] in DIGITAL:
+		if not isChinse_unicode(i):
 			number=number+i
-		elif number!="":
-			resultList.append(number)
-			number=""
-		if i[0] not in DIGITAL:
+		else:
+			if number!="":
+				resultList.append(number)
+				number=""
 			resultList.append(i)
+
+	if number!="":
+		resultList.append(number)
 	return resultList
-#
+
+#将list中连续的数字组合成一个数字
+def combineNumbers_pinyin(strlist):
+	resultList=[]
+	number=""
+	for i in strlist:
+		if i[0] in DIGITAL or (i>=u'\uff21' and i<=u'\uff3a' ): #全角大写字母
+			print i
+			number=number+i
+		else:
+			if number!="":
+				resultList.append(number)
+				number=""
+			resultList.append(i)
+
+	if number!="":
+		resultList.append(number)
+	return resultList
+
+#判断是否是汉字，对于Unicode字符
+def isChinse_unicode(unicodeStr):
+	if unicodeStr >= u'\u4e00' and unicodeStr<=u'\u9fa5': #Unicode 汉字
+		return True
+	return False
+
+#将一个list进行编码转换,unicode转code编码
+def encodeList(_list,code):
+	result=[]
+	for i in _list:
+		result.append(i.encode(code))
+	return result
+
+
+#将一个list进行解码转换,code转unicode编码
+def decodeList(_list,code):
+	result=[]
+	for i in _list:
+		result.append(i.decode(code))
+	return result
+
 #输入：一个汉字句子 输出：汉字句子list，拼音句子list
 def getHPSentList(cnSentence_punc):
 #	print isinstance(chinsesSentence,unicode) #True
-	print cnSentence_punc,isinstance(cnSentence_punc,unicode) #True
+#	print cnSentence_punc,isinstance(cnSentence_punc,unicode) #True
 	#将汉字转为拼音
-	pySent=getPinyin(cnSentence_punc)
+	pySent=getPinyin(cnSentence_punc.rstrip())
 	#将拼音、汉字空格，形成单独的字，放在list中
 	#对于数字处理，12->1 2，这种是不要的
 
-	cnList_temp=list(cnSentence_punc.replace(" ",""))
-	cnSentList=combineNumbers(cnList_temp)
-	pyList_temp=str.split(Encode(pySent[:-1],'gbk')," ")
+	cnList_tempnumber=list(cnSentence_punc.replace(" ",""))
+	cnSentList=combineNumbers_hanzi(cnList_tempnumber)
+
+	pyList_temp=str.split(Encode(pySent,'gbk')," ")
+	pyList_temp=decodeList(pyList_temp,'gbk')
 #	print "=====:",pySent[:-1],'\n',Encode(pySent[:-1],'gbk')
-	pySentList=combineNumbers(pyList_temp)
+	pySentList=combineNumbers_pinyin(pyList_temp)
+	pySentList=encodeList(pySentList,'gbk')
 	print cnSentList
 	print pySentList
 	return cnSentList,pySentList
@@ -227,7 +278,7 @@ def getListRandom(llist,begin=0):
 def getCanPy(pinyin):
 	pyCandidate=getPYCandidates(pinyin)
 	ra=random.uniform(0,1)
-	print "pinyin random:",ra
+#	print "pinyin random:",ra
 #	file1.write("%s pinyin random:%f\n"%(pinyin,ra))
 	if ra>=drop_out:
 		return pinyin
@@ -244,7 +295,7 @@ def getCanHz(pinyin):
 	#得到原来的那个字
 
 	ra=random.uniform(0,1)
-	print "hanzi random:",ra
+#	print "hanzi random:",ra
 #	file1.write("%s hanzi random:%f\n"%(pinyin,ra))
 	if ra>=drop_out:
 		hzPos=0
@@ -257,14 +308,16 @@ def getCanHz(pinyin):
 def getHzSent(cnSentList,pySentList):
 	hzSent=""
 	for index, pinyin in enumerate(pySentList):
+#		print cnSentList[index],"--",pySentList[index]
 		if pinyin[0] in DIGITAL:
 #			print pinyin
 			hzSent=hzSent+cnSentList[index]+" "
+#			print hzSent
 		else:
 			pinyin=numToEnd(pinyin)
-			print "Now the pinyin :",pinyin
+#			print "Now the pinyin :",pinyin
 			pyCan=getCanPy(pinyin)
-			print "Now the Candidate of PY:",pyCan
+#			print "Now the Candidate of PY:",pyCan
 			if pyCan not in pinhanDic: #没有拼音候选
 				hzSent=hzSent+cnSentList[index]+" "
 			elif pyCan==pinyin: #随机得到的拼音候选和原拼音相同,得到原先的那个字
@@ -278,7 +331,7 @@ def getHzSent(cnSentList,pySentList):
 
 
 #对于一句拼音，得到k句汉字句候选
-def getKCanSents(cnSentList,pySentList,k=20):
+def getKCanSents(cnSentList,pySentList,k=10):
 	sentList=[]
 	count=0
 	while count<k:
@@ -336,34 +389,31 @@ def runfunction():
 
 
 
-
-
-
-
-
-
 def testfunction():
 #	print getShengYun("qvan2")
 #	print getPYCandidates("qvan2")
 
-	s=u"冷空气 前锋 过 后 上述 地区 的 气温 将 下降 6—12 摄氏度 ； "
+	s=u"（ Ａ 、 Ｂ ） "
 	cnsent_nopunc=delPunctuation(s)
 	c,p=getHPSentList(cnsent_nopunc)
+	candidate=getKCanSents(c,p)
 	print "------------------Results------------------"
 	for i in c:
 		print i,
 	print "\n"
 	for j in p:
 		print j,
+	for s in candidate:
+		print s
 
 def main():
-
+	tunepypinyin()
 #	print getPinyin(u"了")
 	runfunction()
 
 #	testfunction()
 
-	print "Well Done!"
+	print "\nWell Done! ^_^ \n"
 
 
 main()

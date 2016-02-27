@@ -24,6 +24,7 @@ def getSameWordNUM(sSent,tSent):
 			return 0
 		elif len(sSent)!=len(tSent):
 			print "There is an error that these sentences are different length."
+			print sSent,"\n",tSent
 			return 
 		else:
 			sameNum=0
@@ -34,15 +35,15 @@ def getSameWordNUM(sSent,tSent):
 				else:
 					difwordFile.write("%d, %s,"%((i+1),tSent[i]))
 			difwordFile.write("\n")
-			print "All words: ",len(tSent)," The same words: ",sameNum," The different words: ",(len(tSent)-sameNum)
+#			print "All words: ",len(tSent)," The same words: ",sameNum," The different words: ",(len(tSent)-sameNum)
 			return sameNum
 	print "Raw sentence is empty!"
 	return
 
 
 def main():
-	rightFilePath=r"F:\Laboratory\NLPbase_holidays\FinalTest_SubTask2_space.t2s"
-	compareFilePath=r"F:\Laboratory\NLPbase_holidays\rightwords.output"
+	rightFilePath=r"F:\Laboratory\NLPbase_holidays\ErrorWords\sourceSent_sep.so"
+	compareFilePath=r"F:\Laboratory\NLPbase_holidays\ErrorWords\targetSent_sep.ta"
 	rightFile=openFile(rightFilePath,"r")
 	compareFile=openFile(compareFilePath,"r")
 
